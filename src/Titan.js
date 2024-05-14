@@ -1,13 +1,10 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
+import { titanDelete, titanUpdateState } from './actions'
 
 class Titan extends React.Component {
 	constructor(props){
 			super(props)
-			
-			this.state = {
-			Status: this.props.ttn.Status
-			}
 			
 			this.onStatusClick = this.onStatusClick.bind(this);
 			this.onDeleteClick = this.onDeleteClick.bind(this);
@@ -18,7 +15,7 @@ class Titan extends React.Component {
 		fetch(`titans/${this.props.ttn._id}`, {
 			method: 'PATCH',
 			body:JSON.stringify ({
-				Status: !this.state.Status
+				Status: !this.props.ttn.Status
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -26,9 +23,7 @@ class Titan extends React.Component {
 			}).then((res) => {
 				if (res.status === 200) {
 				console.log('Updated');
-				this.setState({
-					Status: !this.state.Status
-				});
+				this.props.dispatch(titanUpdateState(this.props.ttn._id));
 			}
 			else{
 				console.log('Not updated');
@@ -44,7 +39,7 @@ class Titan extends React.Component {
 			}).then((res) => {
 				if (res.status === 200) {
 				console.log('Deleted');
-				this.props.onTitanDelete(this.props.ttn._id)
+				this.props.dispatch(titanDelete(this.props.ttn._id));
 			}
 			else{
 				console.log('Not deleted');
@@ -53,15 +48,19 @@ class Titan extends React.Component {
 	}
 	
 	render() {
-		return (
-			<li> 
-				<span>{this.props.ttn.name} </span>
-				<span><i>{this.props.ttn.description}</i> </span>
-				<span onClick={this.onStatusClick}><b>{this.state.Status ? 'Alive' : 'Dead'}</b> </span>
-				<button onClick={this.onDeleteClick}>Delete</button>
-			</li>
-		)
-	}
+        return (
+                    <li className = {this.props.ttn.Status? "" : "completed"}>
+                    <div className="form-check"> 
+                        <label className="form-check-label"> 
+                            <input className="checkbox" type="checkbox" checked={this.props.ttn.Status? "" : "checked"} onClick={this.onStatusClick} /> 
+                                <i className="input-helper"></i>
+                            <div className="widget-heading">{this.props.ttn.name} | {this.props.ttn.description}</div>
+                        </label> 
+                    </div> 
+                    <i className="remove mdi mdi-close-circle-outline" onClick={this.onDeleteClick}></i>
+                </li>
+        )
+    }
 }
 
-export default Titan;
+export default connect()(Titan);

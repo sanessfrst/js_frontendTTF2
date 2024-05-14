@@ -1,7 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, NavLink } from 'react-router-dom'
+import { connect } from 'react-redux';
 
-
+import { titanAdd } from './actions'
 
 class TitanAddInner extends React.Component {
 	constructor(props){
@@ -48,18 +49,32 @@ class TitanAddInner extends React.Component {
 			}).then((res) => {
 				return res.json();
 		}).then((data) => {
-			this.props.onTitanAdd(data);
+			this.props.dispatch(titanAdd(data._id, data.name, data.description));
 			this.props.history('/');
 		});
 	}
 	
 	render() {
 		return (
-			<form onSubmit={this.onAddFormSubmit}>
-				<input type="text" value={this.state.name} onChange={this.onNameChange} placeholder="Name"/>
-				<input type="text" value={this.state.description} onChange={this.onDescriptionChange} placeholder="Description"/>
-				<input type="submit" value="Add" />
+		<div className="card-body">
+		 <div className="card-hover-shadow-2x mb-3 card">
+        <div className="card-header-tab card-header">
+          <div className="card-header-title font-size-lg text-capitalize font-weight-normal"><i
+              className="fa fa-tasks"></i>&nbsp;Add Titan</div>
+        </div>
+			<form onSubmit={this.onAddFormSubmit} className="form-inline">
+				<div className="widget-content">
+					
+						<input type="text" value={this.state.name} onChange={this.onNameChange} placeholder="Type" className="form-control todo-list-input"/>
+						<input type="text" value={this.state.description} onChange={this.onDescriptionChange} placeholder="Pilot name" className="form-control todo-list-input"/>
+						<input type="submit" value="Add" className="btn btn-primary"/>
+					
+				</div>
 			</form>
+        <div className="d-block text-right card-footer">
+		<NavLink to='/' className="btn btn-primary">Back to list</NavLink></div>
+      </div>
+			</div>
 		)
 	}
 }
@@ -70,4 +85,4 @@ const TitanAdd = (props) => {
 	)
 }
 
-export default TitanAdd;
+export default connect()(TitanAdd);
