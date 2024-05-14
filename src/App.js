@@ -1,8 +1,8 @@
 import React from 'react'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
-import ToDoList from './ToDoList';
-import ToDoTaskAdd from './ToDoTaskAdd';
+import TitanList from './TitanList';
+import TitanAdd from './TitanAdd';
 
 
 class App extends React.Component {
@@ -10,33 +10,33 @@ class App extends React.Component {
 		super(props);
 		
 		this.state = {
-			tasks: []
+			titans: []
 		}
 		
-		this.onTaskAdd = this.onTaskAdd.bind(this);
-		this.onTaskDelete = this.onTaskDelete.bind(this);
+		this.onTitanAdd = this.onTitanAdd.bind(this);
+		this.onTitanDelete = this.onTitanDelete.bind(this);
 	}
 	
 	componentDidMount() {
-		fetch('tasks').then(function(res){
+		fetch('titans').then(function(res){
 			return res.json();
 		}).then((data) => {
 			this.setState({
-				tasks: data
+				titans: data
 			})
 		});
 	}
 		
-	onTaskAdd(task){
+	onTitanAdd(ttn){
 		this.setState({
-			tasks: [...this.state.tasks, task]
+			titans: [...this.state.titans, ttn]
 			});
 		}
 		
-	onTaskDelete(_id){
+	onTitanDelete(_id){
 		this.setState({
-			tasks: this.state.tasks.filter(function(task) {
-				return task._id !== _id;
+			titans: this.state.titans.filter(function(ttn) {
+				return ttn._id !== _id;
 			})
 		});
 	}
@@ -46,8 +46,8 @@ class App extends React.Component {
 			<div className="App">
 				<Router>
 					<Routes>
-						<Route path="/" element={<ToDoList tasks={this.state.tasks} onTaskDelete={this.onTaskDelete}/>} />
-						<Route path="/add" element={<ToDoTaskAdd onTaskAdd={this.onTaskAdd} />} />
+						<Route path="/" element={<TitanList titans={this.state.titans} onTitanDelete={this.onTitanDelete}/>} />
+						<Route path="/add" element={<TitanAdd onTitanAdd={this.onTitanAdd} />} />
 					</Routes>
 				</Router>
 			</div>

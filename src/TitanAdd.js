@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 
-class ToDoTaskAddInner extends React.Component {
+class TitanAddInner extends React.Component {
 	constructor(props){
 			super(props)
 			
@@ -36,7 +36,7 @@ class ToDoTaskAddInner extends React.Component {
 	onAddFormSubmit(e) {
 		e.preventDefault();
 		
-		fetch('tasks', {
+		fetch('titans', {
 			method: 'POST',
 			body:JSON.stringify ({
 				name: this.state.name,
@@ -48,7 +48,7 @@ class ToDoTaskAddInner extends React.Component {
 			}).then((res) => {
 				return res.json();
 		}).then((data) => {
-			this.props.onTaskAdd(data);
+			this.props.onTitanAdd(data);
 			this.props.history('/');
 		});
 	}
@@ -64,10 +64,10 @@ class ToDoTaskAddInner extends React.Component {
 	}
 }
 
-const ToDoTaskAdd = (props) => {
+const TitanAdd = (props) => {
 	return(
-		<ToDoTaskAddInner {...props} history={useNavigate() } />
+		<TitanAddInner {...props} history={useNavigate() } />
 	)
 }
 
-export default ToDoTaskAdd;
+export default TitanAdd;

@@ -1,12 +1,12 @@
 import React from 'react';
 
 
-class ToDoTask extends React.Component {
+class Titan extends React.Component {
 	constructor(props){
 			super(props)
 			
 			this.state = {
-			done: this.props.task.done
+			Status: this.props.ttn.Status
 			}
 			
 			this.onStatusClick = this.onStatusClick.bind(this);
@@ -15,10 +15,10 @@ class ToDoTask extends React.Component {
 	onStatusClick(e) {
 		e.preventDefault();
 		
-		fetch(`tasks/${this.props.task._id}`, {
+		fetch(`titans/${this.props.ttn._id}`, {
 			method: 'PATCH',
 			body:JSON.stringify ({
-				done: !this.state.done
+				Status: !this.state.Status
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ class ToDoTask extends React.Component {
 				if (res.status === 200) {
 				console.log('Updated');
 				this.setState({
-					done: !this.state.done
+					Status: !this.state.Status
 				});
 			}
 			else{
@@ -39,12 +39,12 @@ class ToDoTask extends React.Component {
 	onDeleteClick(e) {
 		e.preventDefault();
 		
-		fetch(`tasks/${this.props.task._id}`, {
+		fetch(`titans/${this.props.ttn._id}`, {
 			method: 'DELETE'
 			}).then((res) => {
 				if (res.status === 200) {
 				console.log('Deleted');
-				this.props.onTaskDelete(this.props.task._id)
+				this.props.onTitanDelete(this.props.ttn._id)
 			}
 			else{
 				console.log('Not deleted');
@@ -55,13 +55,13 @@ class ToDoTask extends React.Component {
 	render() {
 		return (
 			<li> 
-				<span>{this.props.task.name} </span>
-				<span><i>{this.props.task.description}</i> </span>
-				<span onClick={this.onStatusClick}><b>{this.state.done ? 'Done' : 'Todo'}</b> </span>
+				<span>{this.props.ttn.name} </span>
+				<span><i>{this.props.ttn.description}</i> </span>
+				<span onClick={this.onStatusClick}><b>{this.state.Status ? 'Alive' : 'Dead'}</b> </span>
 				<button onClick={this.onDeleteClick}>Delete</button>
 			</li>
 		)
 	}
 }
 
-export default ToDoTask;
+export default Titan;
